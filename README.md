@@ -294,119 +294,164 @@ Stock Market Data Analyzer/
 ## 10. Quantitative Financial Methodology
 
 ### 10.1 Calendar-Duration CAGR
-Annualized growth rate evaluates exact elapsed calendar duration rather than naive trading day counts:
-$$\text{CAGR} = \left( \frac{P_{\text{end}}}{P_{\text{start}}} \right)^{\frac{1}{\Delta t_{\text{years}}}} - 1, \quad \text{where } \Delta t_{\text{years}} = \frac{\text{Date}_{\text{end}} - \text{Date}_{\text{start}}}{365.25} \approx 4.9911 \text{ years}$$
+
+Annualized growth rate evaluates exact elapsed calendar duration rather than naive trading-day counts.
+
+**Formula:**
+
+CAGR = (P<sub>end</sub> / P<sub>start</sub>)<sup>(1 / Δt<sub>years</sub>)</sup> − 1
+
+where:
+
+Δt<sub>years</sub> = (Date<sub>end</sub> − Date<sub>start</sub>) / 365.25 ≈ 4.9911 years
+
+---
 
 ### 10.2 Proportional OHLC Adjustment Factor
-Corporate actions (splits, bonuses, dividends) scale Open, High, and Low proportionately using daily adjustment factor $f_t$:
-$$f_t = \frac{\text{Adj Close}_t}{\text{Close}_t}, \quad \text{Open}_{\text{adj}, t} = \text{Open}_t \cdot f_t, \quad \text{High}_{\text{adj}, t} = \text{High}_t \cdot f_t, \quad \text{Low}_{\text{adj}, t} = \text{Low}_t \cdot f_t$$
 
-### 10.3 Annualized Sample Volatility (Bessel Corrected, $\text{ddof}=1$)
-Daily log returns $r_t = \ln(P_t / P_{t-1})$ are converted to annualized volatility using sample variance:
-$$\sigma_{\text{daily}} = \sqrt{\frac{1}{N - 1} \sum_{t=1}^N (r_t - \bar{r})^2}, \quad \sigma_{\text{annualized}} = \sigma_{\text{daily}} \times \sqrt{252}$$
+Corporate actions such as splits, bonuses, and dividends scale Open, High, and Low proportionately using the daily adjustment factor.
 
-### 10.4 Risk-Free Rate Proxy & Sharpe Ratio ($R_f = 6.50\%$)
-The risk-free rate proxy is the 10-Yr Indian G-Sec benchmark ($R_{f,\text{annual}} = 6.50\%$). Daily compounding is derived:
-$$R_{f,\text{daily}} = (1 + 0.065)^{\frac{1}{252}} - 1 \approx 0.025001\%, \quad \text{Sharpe Ratio} = \frac{\bar{r} - R_{f,\text{daily}}}{\sigma_{e}} \times \sqrt{252}$$
+**Adjustment factor:**
+
+f<sub>t</sub> = Adj Close<sub>t</sub> / Close<sub>t</sub>
+
+**Adjusted OHLC values:**
+
+Open<sub>adj,t</sub> = Open<sub>t</sub> × f<sub>t</sub>
+
+High<sub>adj,t</sub> = High<sub>t</sub> × f<sub>t</sub>
+
+Low<sub>adj,t</sub> = Low<sub>t</sub> × f<sub>t</sub>
+
+---
+
+### 10.3 Annualized Sample Volatility (Bessel Corrected, `ddof=1`)
+
+Daily log returns are calculated as:
+
+r<sub>t</sub> = ln(P<sub>t</sub> / P<sub>t−1</sub>)
+
+Sample daily volatility uses Bessel's correction (`ddof=1`):
+
+σ<sub>daily</sub> = √[ Σ(r<sub>t</sub> − r̄)² / (N − 1) ]
+
+Annualized volatility is then:
+
+σ<sub>annualized</sub> = σ<sub>daily</sub> × √252
+
+---
+
+### 10.4 Risk-Free Rate Proxy & Sharpe Ratio (`R<sub>f</sub> = 6.50%`)
+
+The risk-free rate proxy is the 10-Year Indian Government Security benchmark.
+
+**Annual risk-free rate:**
+
+R<sub>f,annual</sub> = 6.50%
+
+The corresponding daily compounded rate is:
+
+R<sub>f,daily</sub> = (1 + 0.065)<sup>1/252</sup> − 1 ≈ 0.025001%
+
+The annualized Sharpe Ratio is calculated as:
+
+Sharpe = [(r̄ − R<sub>f,daily</sub>) / σ<sub>e</sub>] × √252
+
+where σ<sub>e</sub> represents the standard deviation of the return series used for the Sharpe calculation.
+
+---
 
 ### 10.5 Market Beta Sensitivity vs NIFTY 50
 
-Evaluates systematic covariance with the NIFTY 50 benchmark using date-aligned valid trading days.
+Beta evaluates systematic covariance with the NIFTY 50 benchmark using date-aligned valid trading days.
 
-$$
-\beta_i =
-\frac{\operatorname{Cov}(r_i, r_m)}
-{\operatorname{Var}(r_m)}
-=
-\frac{
-\sum_{t=1}^{K}
-(r_{i,t}-\bar{r}_i)(r_{m,t}-\bar{r}_m)
-}{
-\sum_{t=1}^{K}
-(r_{m,t}-\bar{r}_m)^2
-}
-$$
+**Formula:**
 
-Where:
+β<sub>i</sub> = Cov(r<sub>i</sub>, r<sub>m</sub>) / Var(r<sub>m</sub>)
 
-- $r_i$ = daily return of instrument $i$
-- $r_m$ = daily return of the NIFTY 50 benchmark
-- $\bar{r}_i$ = mean daily return of instrument $i$
-- $\bar{r}_m$ = mean daily return of the NIFTY 50 benchmark
-- $K$ = number of date-aligned valid observations
+Expanded form:
+
+β<sub>i</sub> = Σ[(r<sub>i,t</sub> − r̄<sub>i</sub>)(r<sub>m,t</sub> − r̄<sub>m</sub>)] / Σ[(r<sub>m,t</sub> − r̄<sub>m</sub>)²]
+
+where:
+
+- r<sub>i</sub> = daily return of instrument i
+- r<sub>m</sub> = daily return of the NIFTY 50 benchmark
+- r̄<sub>i</sub> = mean daily return of instrument i
+- r̄<sub>m</sub> = mean daily return of the NIFTY 50 benchmark
+- K = number of date-aligned valid observations
+
+---
 
 ### 10.6 Wilder's Smoothed RSI-14
 
-The project uses Wilder's recursive smoothing method to calculate the 14-period Relative Strength Index (RSI).
+The project uses Wilder's recursive smoothing method for the 14-period Relative Strength Index (RSI).
 
-For upward gains ($U_t$) and downward losses ($D_t$):
+For upward gains U<sub>t</sub> and downward losses D<sub>t</sub>:
 
-$$
-\operatorname{AvgGain}_t =
-\frac{
-\operatorname{AvgGain}_{t-1} \times 13 + U_t
-}{14}
-$$
+AvgGain<sub>t</sub> = [AvgGain<sub>t−1</sub> × 13 + U<sub>t</sub>] / 14
 
-$$
-\operatorname{AvgLoss}_t =
-\frac{
-\operatorname{AvgLoss}_{t-1} \times 13 + D_t
-}{14}
-$$
+AvgLoss<sub>t</sub> = [AvgLoss<sub>t−1</sub> × 13 + D<sub>t</sub>] / 14
 
-The resulting RSI is calculated as:
+The resulting RSI is:
 
-$$
-RSI_t =
-100 -
-\frac{100}{
-1 +
-\frac{\operatorname{AvgGain}_t}
-{\operatorname{AvgLoss}_t}
-}
-$$
+RSI<sub>t</sub> = 100 − [100 / (1 + AvgGain<sub>t</sub> / AvgLoss<sub>t</sub>)]
 
-This produces a smoothed momentum indicator based on the relative magnitude of recent gains and losses.
+---
 
-### 10.7 Bollinger Bands ($\pm 2\sigma$)
-$$\text{Middle Band}_t = \text{SMA}_{20}(P)_t, \quad \text{Upper/Lower Bands}_t = \text{Middle Band}_t \pm 2 \cdot \sigma_{20, t}$$
+### 10.7 Bollinger Bands (`±2σ`)
+
+The middle Bollinger Band is the 20-period Simple Moving Average:
+
+Middle Band<sub>t</sub> = SMA<sub>20</sub>(P)<sub>t</sub>
+
+The upper and lower bands are calculated using two standard deviations:
+
+Upper Band<sub>t</sub> = Middle Band<sub>t</sub> + 2σ<sub>20,t</sub>
+
+Lower Band<sub>t</sub> = Middle Band<sub>t</sub> − 2σ<sub>20,t</sub>
+
+---
 
 ### 10.8 Rolling 52-Week Range & Warmup Rule
 
-The rolling 52-week high and low are calculated over the most recent **252 trading bars**:
+The rolling 52-week high and low are calculated over the most recent 252 trading bars.
 
-$$
-\operatorname{High}_{52W,t}
-=
-\max_{0 \leq i < 252} P_{t-i}
-$$
+High<sub>52W,t</sub> = max(P<sub>t−i</sub>) for 0 ≤ i < 252
 
-$$
-\operatorname{Low}_{52W,t}
-=
-\min_{0 \leq i < 252} P_{t-i}
-$$
+Low<sub>52W,t</sub> = min(P<sub>t−i</sub>) for 0 ≤ i < 252
 
-**Strict Warmup Rule:** The first **251 trading bars** are explicitly assigned `NaN` to prevent partial-window distortion.
+**Strict Warmup Rule:** The first 251 trading bars are explicitly assigned `NaN` to prevent partial-window distortion.
 
-This ensures that a 52-week range is reported only after a complete 252-trading-bar observation window is available.
+This ensures that the 52-week range is reported only after a complete 252-trading-bar observation window is available.
+
+---
 
 ### 10.9 Underwater Maximum Drawdown (MDD)
-$$\text{DD}_t = \frac{P_t - M_t}{M_t}, \quad M_t = \max_{s \le t} P_s, \quad \text{MDD} = \min_{t} \text{DD}_t$$
+
+The running peak is defined as:
+
+M<sub>t</sub> = max(P<sub>s</sub>) for s ≤ t
+
+The drawdown at time t is:
+
+DD<sub>t</sub> = (P<sub>t</sub> − M<sub>t</sub>) / M<sub>t</sub>
+
+Maximum Drawdown is the minimum observed drawdown:
+
+MDD = min(DD<sub>t</sub>)
+
+---
 
 ### 10.10 Historical Value at Risk (VaR 95%)
 
-Historical Value at Risk uses a non-parametric approach based on the **5th percentile of the daily percentage-return distribution**:
+Historical Value at Risk uses a non-parametric approach based on the 5th percentile of the daily percentage-return distribution.
 
-$$
-\operatorname{VaR}_{95\%}
-=
-\operatorname{Percentile}
-(R_{\text{daily}}, 5)
-$$
+**Formula:**
 
-The resulting value represents the historical 5th-percentile daily return threshold derived directly from the observed return distribution.
+VaR<sub>95%</sub> = Percentile(R<sub>daily</sub>, 5)
+
+The resulting value represents the historical 5th-percentile daily return threshold derived from the observed return distribution.
 
 ---
 
