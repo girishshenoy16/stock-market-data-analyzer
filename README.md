@@ -310,26 +310,103 @@ The risk-free rate proxy is the 10-Yr Indian G-Sec benchmark ($R_{f,\text{annual
 $$R_{f,\text{daily}} = (1 + 0.065)^{\frac{1}{252}} - 1 \approx 0.025001\%, \quad \text{Sharpe Ratio} = \frac{\bar{r} - R_{f,\text{daily}}}{\sigma_{e}} \times \sqrt{252}$$
 
 ### 10.5 Market Beta Sensitivity vs NIFTY 50
-Evaluates systematic covariance with the benchmark index on date-aligned valid trading days:
-$$\beta_i = \frac{\text{Cov}(r_i, r_m)}{\text{Var}(r_m)} = \frac{\sum_{t=1}^K (r_{i,t} - \bar{r}_i)(r_{m,t} - \bar{r}_m)}{\sum_{t=1}^K (r_{m,t} - \bar{r}_m)^2}$$
+
+Evaluates systematic covariance with the NIFTY 50 benchmark using date-aligned valid trading days.
+
+$$
+\beta_i =
+\frac{\operatorname{Cov}(r_i, r_m)}
+{\operatorname{Var}(r_m)}
+=
+\frac{
+\sum_{t=1}^{K}
+(r_{i,t}-\bar{r}_i)(r_{m,t}-\bar{r}_m)
+}{
+\sum_{t=1}^{K}
+(r_{m,t}-\bar{r}_m)^2
+}
+$$
+
+Where:
+
+- $r_i$ = daily return of instrument $i$
+- $r_m$ = daily return of the NIFTY 50 benchmark
+- $\bar{r}_i$ = mean daily return of instrument $i$
+- $\bar{r}_m$ = mean daily return of the NIFTY 50 benchmark
+- $K$ = number of date-aligned valid observations
 
 ### 10.6 Wilder's Smoothed RSI-14
-Recursive exponential smoothing of upward gains ($U_t$) and downward losses ($D_t$):
-$$\text{AvgGain}_t = \frac{\text{AvgGain}_{t-1} \times 13 + U_t}{14}, \quad \text{AvgLoss}_t = \frac{\text{AvgLoss}_{t-1} \times 13 + D_t}{14}, \quad \text{RSI}_t = 100 - \frac{100}{1 + \frac{\text{AvgGain}_t}{\text{AvgLoss}_t}}$$
+
+The project uses Wilder's recursive smoothing method to calculate the 14-period Relative Strength Index (RSI).
+
+For upward gains ($U_t$) and downward losses ($D_t$):
+
+$$
+\operatorname{AvgGain}_t =
+\frac{
+\operatorname{AvgGain}_{t-1} \times 13 + U_t
+}{14}
+$$
+
+$$
+\operatorname{AvgLoss}_t =
+\frac{
+\operatorname{AvgLoss}_{t-1} \times 13 + D_t
+}{14}
+$$
+
+The resulting RSI is calculated as:
+
+$$
+RSI_t =
+100 -
+\frac{100}{
+1 +
+\frac{\operatorname{AvgGain}_t}
+{\operatorname{AvgLoss}_t}
+}
+$$
+
+This produces a smoothed momentum indicator based on the relative magnitude of recent gains and losses.
 
 ### 10.7 Bollinger Bands ($\pm 2\sigma$)
 $$\text{Middle Band}_t = \text{SMA}_{20}(P)_t, \quad \text{Upper/Lower Bands}_t = \text{Middle Band}_t \pm 2 \cdot \sigma_{20, t}$$
 
 ### 10.8 Rolling 52-Week Range & Warmup Rule
-$$\text{High}_{52\text{W}, t} = \max_{0 \le i < 252} P_{t-i}, \quad \text{Low}_{52\text{W}, t} = \min_{0 \le i < 252} P_{t-i}$$
-*Strict Warmup Rule*: The first 251 trading bars are explicitly assigned `NaN` to prevent partial-window distortion.
+
+The rolling 52-week high and low are calculated over the most recent **252 trading bars**:
+
+$$
+\operatorname{High}_{52W,t}
+=
+\max_{0 \leq i < 252} P_{t-i}
+$$
+
+$$
+\operatorname{Low}_{52W,t}
+=
+\min_{0 \leq i < 252} P_{t-i}
+$$
+
+**Strict Warmup Rule:** The first **251 trading bars** are explicitly assigned `NaN` to prevent partial-window distortion.
+
+This ensures that a 52-week range is reported only after a complete 252-trading-bar observation window is available.
 
 ### 10.9 Underwater Maximum Drawdown (MDD)
 $$\text{DD}_t = \frac{P_t - M_t}{M_t}, \quad M_t = \max_{s \le t} P_s, \quad \text{MDD} = \min_{t} \text{DD}_t$$
 
 ### 10.10 Historical Value at Risk (VaR 95%)
-Non-parametric 5th percentile of the daily percentage return distribution:
-$$\text{VaR}_{95\%} = \text{Percentile}(R_{\text{daily}}, 5)$$
+
+Historical Value at Risk uses a non-parametric approach based on the **5th percentile of the daily percentage-return distribution**:
+
+$$
+\operatorname{VaR}_{95\%}
+=
+\operatorname{Percentile}
+(R_{\text{daily}}, 5)
+$$
+
+The resulting value represents the historical 5th-percentile daily return threshold derived directly from the observed return distribution.
 
 ---
 
