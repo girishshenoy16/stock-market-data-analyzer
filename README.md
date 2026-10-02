@@ -112,20 +112,14 @@ Evaluating multi-year investment dynamics across emerging markets presents key d
 
 ## 5. Master Empirical Performance Scorecard (2021–2026)
 
-Derived directly from the single-source-of-truth dataset ([`data/processed/market_summary_metrics.csv`](data/processed/market_summary_metrics.csv)):
-
-<div align="center">
-
-| Instrument | Asset Classification | Last Close | 5-Yr CAGR | Ann. Volatility | Sharpe Ratio ($R_f=6.5\%$) | Max Drawdown | VaR (95%) | Beta vs NIFTY | 52W Position |
-|:---|:---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| **`^NSEI`** | **National Benchmark Index** | **23,140.50 pts** | **+5.46%** | **13.81%** | **+0.01** | **-17.23%** | **-1.39%** | **1.00** | **22.9%** |
-| **`SBIN.NS`** | Public Sector Banking | ₹983.00 | **+19.33%** | 24.51% | **+0.60** | -23.94% | -2.21% | 1.16 | 38.7% |
-| **`ICICIBANK.NS`** | Private Sector Banking | ₹1,326.80 | **+14.00%** | 20.15% | **+0.45** | -22.33% | -1.85% | 0.97 | 51.4% |
-| **`RELIANCE.NS`** | Energy & Telecom Conglomerate | ₹1,226.00 | **+1.22%** | 22.28% | **-0.12** | -27.18% | -2.13% | 1.11 | 3.9% |
-| **`INFY.NS`** | IT Services & Consulting | ₹1,000.20 | **-7.42%** | 25.96% | **-0.41** | -48.17% | -2.61% | 0.97 | 2.5% |
-| **`TCS.NS`** | IT Services & Consulting | ₹2,082.00 | **-8.72%** | 22.58% | **-0.58** | -53.39% | -2.11% | 0.81 | 8.8% |
-
-</div>
+| Instrument         | Asset Classification          |    Last Close     |  5-Yr CAGR  | Ann. Volatility | Sharpe Ratio ($R_f=6.5\%$) | Max Drawdown | VaR (95%)  | Beta vs NIFTY | 52W Position |
+|:-------------------|:------------------------------|:-----------------:|:-----------:|:---------------:|:--------------------------:|:------------:|:----------:|:-------------:|:------------:|
+| **`^NSEI`**        | **National Benchmark Index**  | **23,140.50 pts** | **+5.46%**  |   **13.81%**    |         **+0.01**          | **-17.23%**  | **-1.39%** |   **1.00**    |  **22.9%**   |
+| **`SBIN.NS`**      | Public Sector Banking         |      ₹983.00      | **+19.33%** |     24.51%      |         **+0.60**          |   -23.94%    |   -2.21%   |     1.16      |    38.7%     |
+| **`ICICIBANK.NS`** | Private Sector Banking        |     ₹1,326.80     | **+14.00%** |     20.15%      |         **+0.45**          |   -22.33%    |   -1.85%   |     0.97      |    51.4%     |
+| **`RELIANCE.NS`**  | Energy & Telecom Conglomerate |     ₹1,226.00     | **+1.22%**  |     22.28%      |         **-0.12**          |   -27.18%    |   -2.13%   |     1.11      |     3.9%     |
+| **`INFY.NS`**      | IT Services & Consulting      |     ₹1,000.20     | **-7.42%**  |     25.96%      |         **-0.41**          |   -48.17%    |   -2.61%   |     0.97      |     2.5%     |
+| **`TCS.NS`**       | IT Services & Consulting      |     ₹2,082.00     | **-8.72%**  |     22.58%      |         **-0.58**          |   -53.39%    |   -2.11%   |     0.81      |     8.8%     |
 
 ### Key Empirical Findings
 1. **Banking Hegemony:** State Bank of India (+19.33% CAGR, +0.60 Sharpe) and ICICI Bank (+14.00% CAGR, +0.45 Sharpe) significantly outperformed the market, driven by balance sheet de-leveraging and expanded net interest margins.
@@ -137,23 +131,19 @@ Derived directly from the single-source-of-truth dataset ([`data/processed/marke
 
 ## 6. Technology Stack
 
-<div align="center">
-
-| Technical Domain | Technology / Library | Version | Operational Function & Rationale |
-|:---|:---|:---:|:---|
-| **Language & Runtime** | Python | 3.11.9+ | Core data processing pipeline, financial mathematics, and master CLI orchestrator |
-| **Tabular Data Processing**| Pandas | 3.0.6 | Time-series manipulation, rolling computations, and data cleaning |
-| **Vectorized Math** | NumPy | 2.4.6 | High-performance vectorized arithmetic and logarithmic returns |
-| **Statistical Computations**| SciPy | 1.17.1 | Covariance modeling, percentile distributions, and correlation estimation |
-| **Market Data Ingestion** | yfinance | 0.2.66 | Historical daily OHLCV ingestion with retry logic and caching |
-| **Static Visualizations** | Matplotlib & Seaborn | 3.11.2 / 0.13.2 | Production of 23 publication-grade 300 DPI figures (`outputs/charts/` & `outputs/eda/`) |
-| **Interactive Client UI** | HTML5, CSS3, ES6+ | Modern Web | Accessible executive layout with responsive CSS Grid and semantic markup |
-| **Client Charting Engine** | Plotly.js CDN | 2.35.2 | High-performance interactive candlestick rendering, line charts, and heatmaps |
-| **Automated Testing Suite** | Pytest | 8.4.2 | Hermetic unit, integration, and orchestration test harness |
-| **Browser E2E Verification**| Chrome DevTools Protocol | CDP | Headless visual auditing, console error detection, and viewport overflow assertions |
-| **Static Web Hosting** | GitHub Pages | Serverless | $0/month static hosting directly from the repository's `docs/` directory |
-
-</div>
+| Technical Domain             | Technology / Library     |     Version     | Operational Function & Rationale                                                        |
+|:-----------------------------|:-------------------------|:---------------:|:----------------------------------------------------------------------------------------|
+| **Language & Runtime**       | Python                   |     3.11.9+     | Core data processing pipeline, financial mathematics, and master CLI orchestrator       |
+| **Tabular Data Processing**  | Pandas                   |      3.0.6      | Time-series manipulation, rolling computations, and data cleaning                       |
+| **Vectorized Math**          | NumPy                    |      2.4.6      | High-performance vectorized arithmetic and logarithmic returns                          |
+| **Statistical Computations** | SciPy                    |     1.17.1      | Covariance modeling, percentile distributions, and correlation estimation               |
+| **Market Data Ingestion**    | yfinance                 |     0.2.66      | Historical daily OHLCV ingestion with retry logic and caching                           |
+| **Static Visualizations**    | Matplotlib & Seaborn     | 3.11.2 / 0.13.2 | Production of 23 publication-grade 300 DPI figures (`outputs/charts/` & `outputs/eda/`) |
+| **Interactive Client UI**    | HTML5, CSS3, ES6+        |   Modern Web    | Accessible executive layout with responsive CSS Grid and semantic markup                |
+| **Client Charting Engine**   | Plotly.js CDN            |     2.35.2      | High-performance interactive candlestick rendering, line charts, and heatmaps           |
+| **Automated Testing Suite**  | Pytest                   |      8.4.2      | Hermetic unit, integration, and orchestration test harness                              |
+| **Browser E2E Verification** | Chrome DevTools Protocol |       CDP       | Headless visual auditing, console error detection, and viewport overflow assertions     |
+| **Static Web Hosting**       | GitHub Pages             |   Serverless    | $0/month static hosting directly from the repository's `docs/` directory                |
 
 ---
 
@@ -268,15 +258,13 @@ python -m http.server 8000 -d docs
 Stock Market Data Analyzer/
 ├── data/
 │   ├── raw/                           # Active raw downloads from Yahoo Finance
-│   │   └── archive/                   # Immutable timestamped raw snapshots
 │   └── processed/                     # Cleaned, engineered datasets & master metrics
 ├── docs/                              # Static GitHub Pages web dashboard
 │   ├── index.html                     # Semantic 3-tab executive dashboard markup
 │   ├── style.css                      # Corporate styling & responsive layout
 │   ├── app.js                         # Benchmark-first controller & Plotly.js renderer
 │   └── dashboard_data.js              # Precompiled client data bundle (Schema v1.0.0)
-├── logs/                              # Pipeline execution logs (gitignored)
-│   └── pipeline.log                   # Centralized pipeline execution log
+├── logs/                              # Pipeline execution logs 
 ├── outputs/                           # Pipeline analytical deliverables
 │   ├── charts/                        # 18 static publication-grade 300 DPI figures
 │   ├── eda/                           # 5 diagnostic plots & statistical summary CSV
@@ -357,24 +345,20 @@ $$\text{VaR}_{95\%} = \text{Percentile}(R_{\text{daily}}, 5)$$
 
 ## 12. Testing and Quality Assurance
 
-<div align="center">
-
-| Test Suite Module | File Path | Checks | Validated Requirements & Assertions | Status |
-|:---|:---|:---:|:---|:---:|
-| **Mathematical Formulas & Indicators** | `tests/test_feature_engineering.py` | 10 | Exact CAGR, Bessel $\text{ddof}=1$, compounded $R_f$, Sharpe, pairwise Beta, Wilder RSI-14, 251-day warmup | ✅ PASS |
-| **Pipeline Orchestrator & CLI** | `tests/test_pipeline_orchestrator.py` | 11 | Sequential 7-stage execution, fail-fast halting, `--skip-download` isolation, `--verbose` logging | ✅ PASS |
-| **Market Ingestion & Snapshots** | `tests/test_data_loader.py` | 9 | MultiIndex column flattening, immutable snapshot archival, calendar break preservation | ✅ PASS |
-| **Cleaning & Factor Adjustment** | `tests/test_cleaner.py` | 6 | Non-positive price rejection, proportional factor scaling $f_t$, fallback factors, audit logging | ✅ PASS |
-| **Artifact & Contract Integrity** | `tests/test_artifact_integrity.py` | 6 | Single source of truth verification across CSVs and JSON, column schema consistency, NaN bounds | ✅ PASS |
-| **Dashboard Exporter & Bundle** | `tests/test_dashboard_exporter.py` | 3 | Versioned Schema v1.0.0 compliance, multi-period payload integrity, atomic file writes | ✅ PASS |
-| **Reporting & Digest Generation** | `tests/test_reporter.py` | 3 | Performance digest structure, canonical benchmark-first ordering, currency/percentage formatting | ✅ PASS |
-| **Exploratory Data Analysis** | `tests/test_eda.py` | 2 | Statistical summary generation, 300 DPI distribution and correlation plot verification | ✅ PASS |
-| **Static Visualization Suite** | `tests/test_visualizer.py` | 1 | Multi-panel 300 DPI figure generation across all approved asset symbols | ✅ PASS |
-| **Live Network Connectivity** | `tests/live_integration/test_live_yfinance.py` | 1 | Isolated live network check (gated via `RUN_LIVE_TESTS=1`; skipped by default) | ⏸️ SKIP / ✅ PASS |
-| **Headless Browser CDP Suite** | Chrome DevTools Protocol (CDP) | 38 | 38 visual and DOM checks: 0 console errors, 0 failed requests, 0px horizontal overflow across 6 viewports | ✅ PASS |
-| **Total Quality Assurance Layer** | **Comprehensive System Verification** | **90 Checks** | **100% Baseline: 51 Offline Passed, 1 Live Skipped (Passes with RUN_LIVE_TESTS=1), 38 Browser Checks Passed** | ✅ PASS |
-
-</div>
+| Test Suite Module                      | File Path                                      |    Checks     | Validated Requirements & Assertions                                                                           |      Status      |
+|:---------------------------------------|:-----------------------------------------------|:-------------:|:--------------------------------------------------------------------------------------------------------------|:----------------:|
+| **Mathematical Formulas & Indicators** | `tests/test_feature_engineering.py`            |      10       | Exact CAGR, Bessel $\text{ddof}=1$, compounded $R_f$, Sharpe, pairwise Beta, Wilder RSI-14, 251-day warmup    |     ✅ PASS      |
+| **Pipeline Orchestrator & CLI**        | `tests/test_pipeline_orchestrator.py`          |      11       | Sequential 7-stage execution, fail-fast halting, `--skip-download` isolation, `--verbose` logging             |     ✅ PASS      |
+| **Market Ingestion & Snapshots**       | `tests/test_data_loader.py`                    |       9       | MultiIndex column flattening, immutable snapshot archival, calendar break preservation                        |     ✅ PASS      |
+| **Cleaning & Factor Adjustment**       | `tests/test_cleaner.py`                        |       6       | Non-positive price rejection, proportional factor scaling $f_t$, fallback factors, audit logging              |     ✅ PASS      |
+| **Artifact & Contract Integrity**      | `tests/test_artifact_integrity.py`             |       6       | Single source of truth verification across CSVs and JSON, column schema consistency, NaN bounds               |     ✅ PASS      |
+| **Dashboard Exporter & Bundle**        | `tests/test_dashboard_exporter.py`             |       3       | Versioned Schema v1.0.0 compliance, multi-period payload integrity, atomic file writes                        |     ✅ PASS      |
+| **Reporting & Digest Generation**      | `tests/test_reporter.py`                       |       3       | Performance digest structure, canonical benchmark-first ordering, currency/percentage formatting              |     ✅ PASS      |
+| **Exploratory Data Analysis**          | `tests/test_eda.py`                            |       2       | Statistical summary generation, 300 DPI distribution and correlation plot verification                        |     ✅ PASS      |
+| **Static Visualization Suite**         | `tests/test_visualizer.py`                     |       1       | Multi-panel 300 DPI figure generation across all approved asset symbols                                       |     ✅ PASS      |
+| **Live Network Connectivity**          | `tests/live_integration/test_live_yfinance.py` |       1       | Isolated live network check (gated via `RUN_LIVE_TESTS=1`; skipped by default)                                | ⏸️ SKIP / ✅ PASS |
+| **Headless Browser CDP Suite**         | Chrome DevTools Protocol (CDP)                 |      38       | 38 visual and DOM checks: 0 console errors, 0 failed requests, 0px horizontal overflow across 6 viewports     |     ✅ PASS      |
+| **Total Quality Assurance Layer**      | **Comprehensive System Verification**          | **90 Checks** | **100% Baseline: 51 Offline Passed, 1 Live Skipped (Passes with RUN_LIVE_TESTS=1), 38 Browser Checks Passed** |     ✅ PASS      |
 
 > [!NOTE]
 > The default offline test suite runs 100% hermetically without internet connectivity, reporting **51 passed, 1 skipped**. The single skipped test (`test_live_yfinance.py`) is an intentionally isolated live network check that executes and passes when `RUN_LIVE_TESTS=1` is explicitly set.
@@ -401,14 +385,10 @@ $$\text{VaR}_{95\%} = \text{Percentile}(R_{\text{daily}}, 5)$$
 
 <div align="center">
 
-| Deliverable Document | Relative Path | Target Audience | Primary Contents & Focus |
-|:---|:---|:---|:---|
-| **Authoritative Technical Report** | [`reports/PROJECT_REPORT.md`](reports/PROJECT_REPORT.md) | Technical Reviewers & Mentors | Comprehensive report: mathematical proofs, data dictionary, architecture & tests |
-| **Strategic Executive Summary** | [`reports/EXECUTIVE_SUMMARY.md`](reports/EXECUTIVE_SUMMARY.md) | Investment Committees & C-Suite | Strategic executive briefing, sector rankings, capital compounding & drawdown analysis |
-| **Automated Performance Digest** | [`outputs/reports/automated_performance_digest.txt`](outputs/reports/automated_performance_digest.txt) | Quantitative Analysts | Auto-generated text summary digest produced during Stage 7 of the pipeline |
-| **Cleaning & Reconciliation Audit** | [`outputs/reports/data_cleaning_audit.json`](outputs/reports/data_cleaning_audit.json) | Data Quality Engineers | Machine-readable JSON audit tracking row reconciliations, adjustment factors, and date bounds |
-| **EDA Statistical Summary** | [`outputs/eda/eda_statistical_summary.csv`](outputs/eda/eda_statistical_summary.csv) | Research Analysts | CSV export summarizing descriptive distributions, volume statistics, and standard deviations |
-
+| Deliverable Document                | Relative Path                                                                                          | Target Audience                 | Primary Contents & Focus                                                                      |
+|:------------------------------------|:-------------------------------------------------------------------------------------------------------|:--------------------------------|:----------------------------------------------------------------------------------------------|
+| **Authoritative Technical Report**  | [`reports/PROJECT_REPORT.md`](reports/PROJECT_REPORT.md)                                               | Technical Reviewers & Mentors   | Comprehensive report: mathematical proofs, data dictionary, architecture & tests              |
+| **Strategic Executive Summary**     | [`reports/EXECUTIVE_SUMMARY.md`](reports/EXECUTIVE_SUMMARY.md)                                         | Investment Committees & C-Suite | Strategic executive briefing, sector rankings, capital compounding & drawdown analysis        |
 </div>
 
 ---
