@@ -1,0 +1,1424 @@
+/* ============================================================================
+   Stock Market Data Analyzer — PowerBI Corporate Financial Design System
+   Task 8.2 / Step 1: docs/style.css
+   ============================================================================
+   Implements the approved executive dashboard styling specification:
+   - Deep navy executive header, slate controls, off-white canvas, white cards
+   - PowerBI-style 3-tab navigation system styles (prepared for Step 2 & 3)
+   - Refined 4-card and multi-card KPI scorecard grid with paired metrics
+   - Green/red/neutral variance indicators with accessible contrast
+   - Distinct analytical chart containers with responsive Plotly render targets
+   - Six-instrument branding palette with NIFTY 50 benchmark distinction
+   - Clean, overflow-free responsive layout and print-optimized @media rules
+   ============================================================================ */
+
+/* ---------------------------------------------------------------------------
+   1. CSS Custom Properties (Design Tokens)
+   --------------------------------------------------------------------------- */
+:root {
+  /* --- Core Layout Colors --- */
+  --color-header:          #0f172a;  /* Deep Midnight Navy — Executive header bar */
+  --color-sidebar:         #1e293b;  /* Slate Charcoal — Slicer controls & secondary surfaces */
+  --color-bg:              #f8fafc;  /* Soft Off-White — Main dashboard canvas */
+  --color-card:            #ffffff;  /* Crisp Pure White — Card & container backgrounds */
+  --color-border:          #e2e8f0;  /* Light Slate — Structural borders & dividers */
+  --color-border-subtle:   #f1f5f9;  /* Very light divider for card interiors */
+
+  /* --- Text Colors --- */
+  --color-text-main:       #0f172a;  /* Deep Slate Charcoal — Primary executive text */
+  --color-text-muted:      #64748b;  /* Slate Grey — Secondary / captions / labels */
+  --color-text-inverse:    #f8fafc;  /* Off-White — Text on dark surfaces */
+
+  /* --- Variance Indicators (Financial Direction) --- */
+  --color-positive:        #10b981;  /* Emerald Green — Positive / outperforming */
+  --color-positive-bg:     #ecfdf5;  /* Emerald Tint — Positive badge background */
+  --color-positive-border: #a7f3d0;  /* Emerald Border */
+
+  --color-negative:        #ef4444;  /* Coral Crimson — Negative / underperforming */
+  --color-negative-bg:     #fef2f2;  /* Crimson Tint — Negative badge background */
+  --color-negative-border: #fecaca;  /* Crimson Border */
+
+  --color-neutral:         #64748b;  /* Slate Blue — Neutral / benchmark reference */
+  --color-neutral-bg:      #f1f5f9;  /* Slate Tint — Neutral badge background */
+  --color-neutral-border:  #e2e8f0;  /* Slate Border */
+
+  /* --- Instrument Branding Colors (6 Approved Instruments) --- */
+  --color-reliance:        #0284c7;  /* Corporate Blue — Reliance Industries */
+  --color-tcs:             #4338ca;  /* Indian Indigo — Tata Consultancy Services */
+  --color-infy:            #0d9488;  /* Emerald Teal — Infosys Limited */
+  --color-sbin:            #d97706;  /* Warm Amber — State Bank of India */
+  --color-icicibank:       #dc2626;  /* Rust Crimson — ICICI Bank */
+  --color-nsei:            #475569;  /* Neutral Slate — NIFTY 50 Benchmark Index */
+
+  /* --- Interactive States & Accents --- */
+  --color-hover:           #334155;  /* Slate hover accent on dark buttons */
+  --color-active:          #2563eb;  /* Executive Blue — Active selection highlight */
+  --color-focus-ring:      #38bdf8;  /* Sky Blue — Keyboard accessible focus ring */
+
+  /* --- Elevations & Shadows --- */
+  --shadow-card:           0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-card-hover:     0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-header:         0 1px 3px rgba(0, 0, 0, 0.12);
+  --shadow-tab:            0 1px 2px rgba(0, 0, 0, 0.04);
+
+  /* --- Spacing Scale --- */
+  --space-2xs:  2px;
+  --space-xs:   4px;
+  --space-sm:   8px;
+  --space-md:   16px;
+  --space-lg:   24px;
+  --space-xl:   32px;
+  --space-2xl:  48px;
+
+  /* --- Border Radius Scale --- */
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-pill: 9999px;
+
+  /* --- Typography Stacks --- */
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                 "Helvetica Neue", Arial, sans-serif;
+  --font-mono:   "SF Mono", "Cascadia Code", "Segoe UI Mono", Consolas,
+                 "Liberation Mono", Menlo, monospace;
+}
+
+
+/* ---------------------------------------------------------------------------
+   2. Reset & Base Styles
+   --------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--color-text-main);
+  background-color: var(--color-bg);
+  min-height: 100vh;
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+
+/* ---------------------------------------------------------------------------
+   3. Executive Header Bar
+   --------------------------------------------------------------------------- */
+.dashboard-header {
+  background-color: var(--color-header);
+  color: var(--color-text-inverse);
+  padding: 14px var(--space-xl);
+  box-shadow: var(--shadow-header);
+  position: relative;
+}
+
+.dashboard-header__title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--color-text-inverse);
+}
+
+.dashboard-header__subtitle {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--color-text-muted);
+  margin-top: 4px;
+  opacity: 0.9;
+}
+
+/* Temporal metadata tags within header */
+.dashboard-header__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.dashboard-header__meta-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: 11.5px;
+  font-weight: 500;
+  font-family: var(--font-mono);
+  color: var(--color-text-inverse);
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-pill);
+  padding: 3px 10px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.dashboard-header__meta-tag--label {
+  font-family: var(--font-family);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  opacity: 0.75;
+  margin-right: 2px;
+}
+
+
+/* ---------------------------------------------------------------------------
+   4. Provenance Banner
+   --------------------------------------------------------------------------- */
+.provenance-banner {
+  background-color: var(--color-neutral-bg);
+  border-bottom: 1px solid var(--color-border);
+  padding: 8px var(--space-xl);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm);
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.provenance-banner__pill {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  padding: 3px 10px;
+  max-width: 100%;
+}
+
+.provenance-banner__pill--label {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  color: var(--color-text-main);
+  white-space: nowrap;
+}
+
+.provenance-banner__pill--value {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--color-text-muted);
+  word-break: break-all;
+  overflow-wrap: anywhere;
+}
+
+
+/* ---------------------------------------------------------------------------
+   5. Slicer Controls Bar (Persistent Global Slicers)
+   --------------------------------------------------------------------------- */
+.controls-bar {
+  background-color: var(--color-sidebar);
+  padding: 10px var(--space-xl);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-md);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.controls-bar__group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.controls-bar__label {
+  font-size: 11.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.65);
+  text-align: center;
+}
+
+/* Slicer button groups */
+.slicer-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.slicer-btn {
+  font-family: var(--font-family);
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.75);
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-sm);
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.slicer-btn:hover {
+  color: var(--color-text-inverse);
+  background-color: var(--color-hover);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.slicer-btn:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+.slicer-btn--active {
+  color: var(--color-text-inverse);
+  background-color: var(--color-active);
+  border-color: var(--color-active);
+  font-weight: 600;
+}
+
+.slicer-btn--active:hover {
+  background-color: #1d4ed8;
+  border-color: #1d4ed8;
+}
+
+/* Instrument-specific brand accents on active state */
+.slicer-btn--reliance.slicer-btn--active   { background-color: var(--color-reliance);  border-color: var(--color-reliance);  }
+.slicer-btn--tcs.slicer-btn--active        { background-color: var(--color-tcs);       border-color: var(--color-tcs);       }
+.slicer-btn--infy.slicer-btn--active       { background-color: var(--color-infy);      border-color: var(--color-infy);      }
+.slicer-btn--sbin.slicer-btn--active       { background-color: var(--color-sbin);      border-color: var(--color-sbin);      }
+.slicer-btn--icicibank.slicer-btn--active  { background-color: var(--color-icicibank); border-color: var(--color-icicibank); }
+.slicer-btn--nsei.slicer-btn--active       { background-color: var(--color-nsei);      border-color: var(--color-nsei);      }
+
+/* Date range preset buttons */
+.date-preset-btn {
+  font-family: var(--font-family);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-sm);
+  padding: 5px 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.date-preset-btn:hover {
+  color: var(--color-text-inverse);
+  background-color: var(--color-hover);
+}
+
+.date-preset-btn--active {
+  color: var(--color-text-inverse);
+  background-color: var(--color-active);
+  border-color: var(--color-active);
+  font-weight: 600;
+}
+
+/* Global Actions / Reset Filters Button */
+.controls-bar__group--reset {
+  margin-left: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+}
+
+.reset-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: var(--font-family);
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--radius-sm);
+  padding: 5px 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.reset-btn:hover {
+  color: #ffffff;
+  background-color: rgba(239, 68, 68, 0.18);
+  border-color: rgba(239, 68, 68, 0.45);
+}
+
+.reset-btn:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+.reset-btn:active {
+  transform: scale(0.97);
+  background-color: rgba(239, 68, 68, 0.3);
+}
+
+.reset-btn__icon {
+  flex-shrink: 0;
+  transition: transform 0.25s ease;
+}
+
+.reset-btn:hover .reset-btn__icon {
+  transform: rotate(-45deg);
+}
+
+
+
+/* Indicator overlay toggle switches */
+.toggle-pill {
+  font-family: var(--font-family);
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.6);
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-pill);
+  padding: 4px 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.toggle-pill:hover {
+  color: rgba(255, 255, 255, 0.8);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.toggle-pill--active {
+  color: var(--color-text-inverse);
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+
+/* ---------------------------------------------------------------------------
+   6. PowerBI Executive Tab Navigation (Prepared for Step 2 & 3)
+   --------------------------------------------------------------------------- */
+.tab-navigation {
+  background-color: var(--color-card);
+  border-bottom: 2px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 95;
+  box-shadow: var(--shadow-tab);
+}
+
+.tab-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 var(--space-xl);
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tab-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.tab-btn {
+  font-family: var(--font-family);
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  padding: 11px 18px;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+  margin-bottom: -2px;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.tab-btn:hover {
+  color: var(--color-text-main);
+  background-color: var(--color-neutral-bg);
+}
+
+.tab-btn:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: -2px;
+}
+
+.tab-btn--active {
+  color: var(--color-active);
+  font-weight: 600;
+  border-bottom-color: var(--color-active);
+  background-color: transparent;
+}
+
+.tab-btn__badge {
+  font-size: 11px;
+  font-weight: 600;
+  background-color: var(--color-neutral-bg);
+  color: var(--color-text-muted);
+  padding: 1px 7px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border);
+}
+
+.tab-btn--active .tab-btn__badge {
+  background-color: #dbeafe;
+  color: var(--color-active);
+  border-color: #bfdbfe;
+}
+
+/* Tab Content Panes (Safe defaults: display block so nothing is hidden in Step 1) */
+.tab-pane {
+  display: block;
+}
+
+/* Inactive tab state (activated via JS in Step 3) */
+.tab-pane--hidden {
+  display: none !important;
+}
+
+/* Local inline control bar for Tab 2 (Technical Analysis overlay toggles) */
+.controls-bar--inline {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-md);
+  margin-bottom: var(--space-md);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+
+.controls-bar--inline .controls-bar__label {
+  color: var(--color-text-muted);
+}
+
+.controls-bar--inline .toggle-pill {
+  color: var(--color-text-muted);
+  border-color: var(--color-border);
+  background-color: var(--color-bg);
+}
+
+.controls-bar--inline .toggle-pill:hover {
+  color: var(--color-text-main);
+  background-color: var(--color-neutral-bg);
+  border-color: #cbd5e1;
+}
+
+.controls-bar--inline .toggle-pill--active {
+  color: var(--color-active);
+  background-color: #eff6ff;
+  border-color: #bfdbfe;
+  font-weight: 600;
+}
+
+
+/* ---------------------------------------------------------------------------
+   7. Main Dashboard Content Container
+   --------------------------------------------------------------------------- */
+.dashboard-content {
+  max-width: 1440px;
+  width: 100%;
+  margin: 0 auto;
+  padding: var(--space-xl);
+  overflow-x: hidden;
+}
+
+/* Section headings within the dashboard body */
+.section-header {
+  margin-bottom: var(--space-md);
+}
+
+.section-heading {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text-main);
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 2px solid var(--color-border);
+}
+
+
+/* ---------------------------------------------------------------------------
+   8. KPI Scorecard Grid & Paired Metric Card Layout
+   --------------------------------------------------------------------------- */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+/* 4-column layout for the executive overview tab (prepared for Step 2) */
+.kpi-grid--4col {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.kpi-card {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.kpi-card:hover {
+  box-shadow: var(--shadow-card-hover);
+}
+
+/* Instrument color accents — top border stripe */
+.kpi-card--reliance   { border-top: 3px solid var(--color-reliance);  }
+.kpi-card--tcs        { border-top: 3px solid var(--color-tcs);       }
+.kpi-card--infy       { border-top: 3px solid var(--color-infy);      }
+.kpi-card--sbin       { border-top: 3px solid var(--color-sbin);      }
+.kpi-card--icicibank  { border-top: 3px solid var(--color-icicibank); }
+.kpi-card--nsei       { border-top: 3px solid var(--color-nsei);      }
+
+.kpi-card__ticker {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  text-align: center;
+}
+
+.kpi-card__name {
+  font-size: 12.5px;
+  font-weight: 400;
+  color: var(--color-text-muted);
+  margin-top: -1px;
+  text-align: center;
+  width: 100%;
+}
+
+.kpi-card__value {
+  font-size: clamp(22px, 2.3vw, 28px);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font-mono);
+  color: var(--color-text-main);
+  line-height: 1.15;
+  margin: 6px 0 3px 0;
+  text-align: center;
+  width: 100%;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+.kpi-card__label {
+  font-size: 11.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  text-align: center;
+  width: 100%;
+}
+
+/* Primary and secondary paired metrics within card */
+.kpi-card__metrics {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  margin-top: var(--space-xs);
+  width: 100%;
+}
+
+.kpi-card__metric-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12.5px;
+}
+
+.kpi-card__metric-label {
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+
+.kpi-card__metric-value {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-main);
+}
+
+/* Secondary paired metric container (accommodates Beta, Sharpe, or sub-metrics) */
+.kpi-card__secondary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: var(--space-xs);
+  padding-top: var(--space-xs);
+  border-top: 1px solid var(--color-border-subtle);
+  font-size: 12px;
+  width: 100%;
+  text-align: center;
+}
+
+.kpi-card__secondary-label {
+  color: var(--color-text-muted);
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.kpi-card__secondary-value {
+  font-weight: 600;
+  font-family: var(--font-mono);
+  color: var(--color-text-main);
+  font-size: 12.5px;
+}
+
+/* 52-Week Range Corridor styling (supporting 52W High and 52W Low in Card 1) */
+.kpi-card__range {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: var(--space-xs);
+  padding-top: var(--space-xs);
+  border-top: 1px solid var(--color-border-subtle);
+  font-size: 12px;
+  width: 100%;
+}
+
+.kpi-card__range-item {
+  display: inline-flex;
+  gap: var(--space-xs);
+  align-items: baseline;
+  white-space: nowrap;
+}
+
+.kpi-card__range-label {
+  color: var(--color-text-muted);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.kpi-card__range-val {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--color-text-main);
+  font-size: 12.5px;
+}
+
+/* Variance badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  padding: 2px 10px;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.badge--positive {
+  color: var(--color-positive);
+  background-color: var(--color-positive-bg);
+  border: 1px solid var(--color-positive-border);
+}
+
+.badge--negative {
+  color: var(--color-negative);
+  background-color: var(--color-negative-bg);
+  border: 1px solid var(--color-negative-border);
+}
+
+.badge--neutral {
+  color: var(--color-neutral);
+  background-color: var(--color-neutral-bg);
+  border: 1px solid var(--color-neutral-border);
+}
+
+
+/* ---------------------------------------------------------------------------
+   9. Analytical Chart Grid & Containers
+   --------------------------------------------------------------------------- */
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+
+.chart-container {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  min-height: 350px;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* Full-width chart spanning both columns — Normalized Chart is visually dominant */
+.chart-container--full {
+  grid-column: 1 / -1;
+  min-height: 410px;
+}
+
+.chart-container--full .chart-container__plot {
+  min-height: 330px;
+}
+
+.chart-container__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 4px;
+  margin-bottom: var(--space-sm);
+  width: 100%;
+}
+
+.chart-container__header > div {
+  text-align: center;
+  width: 100%;
+}
+
+.chart-container__title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text-main);
+  text-align: center;
+}
+
+.chart-container__caption {
+  font-size: 13.5px;
+  font-weight: 400;
+  color: var(--color-text-muted);
+  margin-top: 2px;
+  line-height: 1.4;
+  text-align: center;
+}
+
+/* Plotly chart placeholder / render target */
+.chart-container__plot {
+  flex: 1;
+  min-height: 280px;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* Plotly overrides: remove default Plotly branding padding */
+.chart-container__plot .plotly,
+.chart-container__plot .plotly .main-svg {
+  border-radius: var(--radius-sm);
+  max-width: 100%;
+}
+
+
+/* ---------------------------------------------------------------------------
+   10. Comparative Performance Table
+   --------------------------------------------------------------------------- */
+.table-container {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  overflow-x: auto;
+  margin-bottom: var(--space-xl);
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+  max-width: 100%;
+}
+
+.summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.summary-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.summary-table th {
+  background-color: var(--color-header);
+  color: var(--color-text-inverse);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 10px 14px;
+  text-align: right;
+  border-bottom: 2px solid var(--color-active);
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.15s ease;
+}
+
+.summary-table th:first-child {
+  text-align: left;
+  border-top-left-radius: var(--radius-md);
+  position: sticky;
+  left: 0;
+  z-index: 12;
+  background-color: var(--color-header);
+  box-shadow: 1px 0 0 var(--color-border);
+}
+
+.summary-table th:last-child {
+  border-top-right-radius: var(--radius-md);
+}
+
+.summary-table th:hover {
+  background-color: var(--color-hover);
+}
+
+/* Sort indicator arrows */
+.summary-table th[data-sort-dir="asc"]::after {
+  content: " ▲";
+  font-size: 10px;
+  opacity: 0.8;
+}
+
+.summary-table th[data-sort-dir="desc"]::after {
+  content: " ▼";
+  font-size: 10px;
+  opacity: 0.8;
+}
+
+.summary-table td {
+  padding: 10px 14px;
+  text-align: right;
+  border-bottom: 1px solid var(--color-border);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-main);
+}
+
+.summary-table td:first-child {
+  text-align: left;
+  font-weight: 600;
+  position: sticky;
+  left: 0;
+  z-index: 5;
+  background-color: var(--color-card);
+  box-shadow: 1px 0 0 var(--color-border);
+}
+
+.summary-table tbody tr:hover td:first-child {
+  background-color: var(--color-neutral-bg);
+}
+
+.summary-table .tr--benchmark td:first-child,
+.summary-table tr.tr--benchmark td:first-child {
+  background-color: var(--color-neutral-bg);
+}
+
+.summary-table tbody tr:hover {
+  background-color: var(--color-neutral-bg);
+}
+
+.summary-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Benchmark row distinction */
+.summary-table .tr--benchmark,
+.summary-table tr.tr--benchmark {
+  background-color: var(--color-neutral-bg);
+  font-weight: 500;
+}
+
+.summary-table .tr--benchmark td,
+.summary-table tr.tr--benchmark td {
+  border-bottom: 2px solid var(--color-border);
+}
+
+/* Enhanced Table Content Elements */
+.td-instrument {
+  min-width: 175px;
+}
+
+.instrument-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-align: left;
+}
+
+.instrument-ticker {
+  font-weight: 700;
+  font-size: 13.5px;
+  color: var(--color-text-main);
+  letter-spacing: -0.01em;
+}
+
+.instrument-name {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.badge--xs {
+  font-size: 10px;
+  padding: 1px 6px;
+  line-height: 1.2;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+
+.td-52w {
+  min-width: 150px;
+}
+
+.table-range {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  white-space: nowrap;
+  font-size: 12px;
+  font-family: var(--font-mono);
+}
+
+.table-range__item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+}
+
+.table-range__lbl {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+
+.table-range__sep {
+  color: var(--color-border);
+  margin: 0 2px;
+  font-weight: 400;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.text-muted {
+  color: var(--color-text-muted);
+}
+
+/* Instrument color dot indicator in table */
+.instrument-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: var(--space-xs);
+  vertical-align: middle;
+}
+
+.instrument-dot--reliance   { background-color: var(--color-reliance);  }
+.instrument-dot--tcs        { background-color: var(--color-tcs);       }
+.instrument-dot--infy       { background-color: var(--color-infy);      }
+.instrument-dot--sbin       { background-color: var(--color-sbin);      }
+.instrument-dot--icicibank  { background-color: var(--color-icicibank); }
+.instrument-dot--nsei       { background-color: var(--color-nsei);      }
+
+/* Cell-level variance coloring */
+.cell--positive {
+  color: var(--color-positive);
+  font-weight: 600;
+}
+
+.cell--negative {
+  color: var(--color-negative);
+  font-weight: 600;
+}
+
+/* Best/worst highlighting */
+.cell--best {
+  background-color: var(--color-positive-bg);
+  color: var(--color-positive);
+  font-weight: 700;
+}
+
+.cell--worst {
+  background-color: var(--color-negative-bg);
+  color: var(--color-negative);
+  font-weight: 700;
+}
+
+
+/* ---------------------------------------------------------------------------
+   11. Dashboard Footer
+   --------------------------------------------------------------------------- */
+.dashboard-footer {
+  background-color: var(--color-header);
+  color: #ffffff;
+  padding: var(--space-md) var(--space-xl);
+  font-size: 15px;
+  text-align: center;
+  line-height: 1.6;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.dashboard-footer a {
+  color: var(--color-focus-ring);
+  text-decoration: none;
+}
+
+.dashboard-footer a:hover {
+  text-decoration: underline;
+}
+
+.dashboard-footer__disclaimer {
+  font-size: 14px;
+  font-style: italic;
+  color: rgb(255 255 255 / 70%);
+  margin-top: var(--space-xs);
+}
+
+
+/* ---------------------------------------------------------------------------
+   12. Utility Classes
+   --------------------------------------------------------------------------- */
+/* Monospace numeric formatting */
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Screen-reader only (accessible hidden text) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Loading state for chart containers */
+.chart-container--loading {
+  position: relative;
+}
+
+.chart-container--loading::after {
+  content: "Loading chart…";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+
+/* ---------------------------------------------------------------------------
+   13. Responsive Breakpoints
+   --------------------------------------------------------------------------- */
+
+/* Large screens: < 1280px */
+@media (max-width: 1280px) {
+  .kpi-grid--4col {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dashboard-content {
+    padding: var(--space-lg);
+  }
+}
+
+/* Tablets & medium screens: < 1024px */
+@media (max-width: 1024px) {
+  .chart-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .kpi-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  .kpi-grid--4col {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .controls-bar {
+    padding: var(--space-md) var(--space-lg);
+    gap: var(--space-md);
+  }
+
+  .dashboard-header {
+    padding: var(--space-md) var(--space-lg);
+  }
+
+  .tab-bar {
+    padding: 0 var(--space-lg);
+  }
+}
+
+/* Mobile landscape & small tablets: < 768px */
+@media (max-width: 768px) {
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .kpi-grid--4col {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dashboard-header__title {
+    font-size: 22px;
+  }
+
+  .dashboard-header__meta {
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .controls-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-md);
+  }
+
+  .controls-bar__group--reset {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .reset-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 7px 12px;
+  }
+
+  .dashboard-content {
+    padding: var(--space-md);
+  }
+
+  .chart-container {
+    min-height: 300px;
+    padding: var(--space-md);
+  }
+
+  .kpi-card__value {
+    font-size: 24px;
+  }
+
+  .provenance-banner {
+    padding: var(--space-sm) var(--space-md);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-xs);
+  }
+
+  .tab-navigation {
+    top: 0;
+  }
+
+  .tab-btn {
+    padding: 10px 14px;
+    font-size: 12px;
+  }
+}
+
+/* Small mobile: < 480px */
+@media (max-width: 480px) {
+  .kpi-grid,
+  .kpi-grid--4col {
+    grid-template-columns: 1fr;
+  }
+
+  .slicer-buttons {
+    flex-direction: column;
+  }
+
+  #date-slicer {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+  }
+
+  #date-slicer .date-preset-btn {
+    flex: 1 1 calc(50% - var(--space-xs));
+    text-align: center;
+    padding: 6px 8px;
+  }
+
+
+  .slicer-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .tab-bar {
+    padding: 0 var(--space-md);
+  }
+
+  .provenance-banner {
+    padding: var(--space-xs) var(--space-md);
+  }
+
+  .provenance-banner__pill {
+    border-radius: var(--radius-sm);
+    width: 100%;
+  }
+
+  .chart-container__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-xs);
+  }
+}
+
+
+/* ---------------------------------------------------------------------------
+   14. Print Optimization (@media print)
+   --------------------------------------------------------------------------- */
+@media print {
+  /* High-contrast white reset for physical printing */
+  body {
+    background-color: #ffffff;
+    color: #000000;
+    font-size: 11px;
+  }
+
+  .dashboard-header {
+    background-color: #ffffff;
+    color: #000000;
+    box-shadow: none;
+    border-bottom: 2px solid #000000;
+    position: static;
+  }
+
+  .dashboard-header__title {
+    color: #000000;
+  }
+
+  .dashboard-header__subtitle {
+    color: #333333;
+    opacity: 1;
+  }
+
+  .dashboard-header__meta-tag {
+    color: #333333;
+    background-color: transparent;
+    border-color: #cccccc;
+  }
+
+  /* Suppress interactive controls & tab bar during printing */
+  .controls-bar,
+  .tab-navigation,
+  .slicer-buttons,
+  .date-preset-btn,
+  .toggle-pill,
+  .controls-bar--inline {
+    display: none !important;
+  }
+
+  /* Ensure all tab panes are visible in print */
+  .tab-pane,
+  .tab-pane--hidden {
+    display: block !important;
+  }
+
+  /* Cards and containers */
+  .kpi-card,
+  .chart-container,
+  .table-container {
+    box-shadow: none;
+    border: 1px solid #cccccc;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .chart-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+
+  .kpi-grid,
+  .kpi-grid--4col {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-sm);
+  }
+
+  /* Table styling in print */
+  .summary-table th {
+    background-color: #f0f0f0;
+    color: #000000;
+  }
+
+  /* Footer */
+  .dashboard-footer {
+    background-color: #ffffff;
+    color: #333333;
+    border-top: 1px solid #cccccc;
+  }
+
+  .provenance-banner {
+    background-color: #ffffff;
+    border-bottom: 1px solid #cccccc;
+  }
+
+  .provenance-banner__pill {
+    background-color: transparent;
+    border-color: #cccccc;
+  }
+}

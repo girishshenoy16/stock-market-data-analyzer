@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stock Market Data Analyzer — Executive Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- 1. Executive Header -->
+  <header class="dashboard-header">
+    <h1 class="dashboard-header__title">Stock Market Data Analyzer</h1>
+    <p class="dashboard-header__subtitle">5-Year Performance &amp; Risk Intelligence · NSE Equity &amp; Benchmark Analysis</p>
+    <div class="dashboard-header__meta" id="header-meta">
+      <!-- Populated by app.js with meta tags for:
+           - Pipeline Execution: {timestamp}
+           - Market Data: {observation_date}
+           - Schema: {version} | Methodology: {version}
+      -->
+    </div>
+  </header>
+
+  <!-- 2. Provenance Banner -->
+  <div class="provenance-banner" id="provenance-banner">
+    <!-- Populated by app.js with pills for:
+         - Data Source: data/processed/{TICKER}_engineered.csv
+         - Risk-Free Rate: 6.50% p.a. (Illustrative Proxy)
+    -->
+  </div>
+
+  <!-- 3. Persistent Global Controls Bar -->
+  <nav class="controls-bar" aria-label="Dashboard Filters">
+    <!-- Instrument Slicer -->
+    <div class="controls-bar__group">
+      <span class="controls-bar__label">Instrument</span>
+      <div class="slicer-buttons" id="instrument-slicer">
+        <button class="slicer-btn slicer-btn--reliance slicer-btn--active" data-ticker="RELIANCE.NS" aria-selected="true">RELIANCE</button>
+        <button class="slicer-btn slicer-btn--tcs" data-ticker="TCS.NS" aria-selected="false">TCS</button>
+        <button class="slicer-btn slicer-btn--infy" data-ticker="INFY.NS" aria-selected="false">INFY</button>
+        <button class="slicer-btn slicer-btn--sbin" data-ticker="SBIN.NS" aria-selected="false">SBIN</button>
+        <button class="slicer-btn slicer-btn--icicibank" data-ticker="ICICIBANK.NS" aria-selected="false">ICICIBANK</button>
+        <button class="slicer-btn slicer-btn--nsei" data-ticker="^NSEI" aria-selected="false">NIFTY 50</button>
+      </div>
+    </div>
+    <!-- Date Range Presets -->
+    <div class="controls-bar__group">
+      <span class="controls-bar__label">Date Range</span>
+      <div class="slicer-buttons" id="date-slicer">
+        <button class="date-preset-btn" data-range="1Y" aria-pressed="false">1 Year</button>
+        <button class="date-preset-btn" data-range="3Y" aria-pressed="false">3 Years</button>
+        <button class="date-preset-btn date-preset-btn--active" data-range="5Y" aria-pressed="true">5 Years</button>
+        <button class="date-preset-btn" data-range="YTD" aria-pressed="false">YTD</button>
+      </div>
+    </div>
+    <!-- Global Actions / Reset Filters -->
+    <div class="controls-bar__group controls-bar__group--reset">
+      <button class="reset-btn" id="btn-reset-filters" title="Reset all filters, overlays, and zoom to initial state" aria-label="Reset all filters to default">
+        <svg class="reset-btn__icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+          <path d="M3 3v5h5"/>
+        </svg>
+        <span>Reset Filters</span>
+      </button>
+    </div>
+  </nav>
+
+
+  <!-- 4. PowerBI Executive Tab Navigation -->
+  <nav class="tab-navigation" aria-label="Dashboard Sections">
+    <div class="tab-bar" role="tablist">
+      <button class="tab-btn tab-btn--active" role="tab" aria-selected="true" aria-controls="tab-overview" id="tab-btn-overview" data-tab="tab-overview">
+        <span>📊 Executive Overview</span>
+        <span class="tab-btn__badge">Cockpit</span>
+      </button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-technical" id="tab-btn-technical" data-tab="tab-technical">
+        <span>📈 Technical &amp; Price Action</span>
+        <span class="tab-btn__badge">Deep Dive</span>
+      </button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-risk" id="tab-btn-risk" data-tab="tab-risk">
+        <span>🛡️ Risk &amp; Diversification</span>
+        <span class="tab-btn__badge">Portfolio</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- 5. Main Content: 3 Semantic Tab Panes -->
+  <main class="dashboard-content">
+
+    <!-- TAB 1: EXECUTIVE OVERVIEW (COCKPIT) -->
+    <div id="tab-overview" class="tab-pane" role="tabpanel" aria-labelledby="tab-btn-overview">
+      <p class="chart-container__caption" style="margin-bottom: 12px;">Selected instrument performance &amp; risk summary compared with 10-Yr Indian G-Sec benchmark proxy (6.50% p.a.).</p>
+
+      <!-- 4-Card Focused Executive KPI Scorecards -->
+      <div class="kpi-grid kpi-grid--4col" id="kpi-grid">
+        <!-- Populated dynamically by app.js -->
+      </div>
+
+      <!-- Tab 1 Visuals -->
+      <div class="chart-grid">
+        <!-- Chart 1: Normalized Price Performance Comparison (Full Width) -->
+        <div class="chart-container chart-container--full">
+          <div class="chart-container__header">
+            <div>
+              <h3 class="chart-container__title">Normalized Price Performance Comparison</h3>
+              <p class="chart-container__caption">Relative wealth trajectory indexed to 100.0 at inception across all instruments.</p>
+            </div>
+          </div>
+          <div class="chart-container__plot" id="chart-normalized"></div>
+        </div>
+
+        <!-- Chart 2: Risk-Return Efficiency Map -->
+        <div class="chart-container">
+          <div class="chart-container__header">
+            <div>
+              <h3 class="chart-container__title">Risk-Return Efficiency Map</h3>
+              <p class="chart-container__caption">Cross-instrument risk-return mapping comparing 5-year CAGR against annualized return volatility.</p>
+            </div>
+          </div>
+          <div class="chart-container__plot" id="chart-scatter"></div>
+        </div>
+
+        <!-- Chart 3: 52-Week Range Position Gauge -->
+        <div class="chart-container">
+          <div class="chart-container__header">
+            <div>
+              <h3 class="chart-container__title">52-Week Range Position</h3>
+              <p class="chart-container__caption">Current price position relative to rolling 252-day adjusted trading boundaries.</p>
+            </div>
+          </div>
+          <div class="chart-container__plot" id="chart-52w"></div>
+        </div>
+      </div><!-- /.chart-grid -->
+
+      <!-- Executive Master Performance & Risk Table -->
+      <h2 class="section-heading">Executive Performance &amp; Risk Summary</h2>
+      <div class="table-container">
+        <table class="summary-table" id="summary-table">
+          <thead>
+            <tr>
+              <th data-sort="ticker">Instrument</th>
+              <th data-sort="last_close">Last Close</th>
+              <th data-sort="cagr_pct">5-Yr CAGR (%)</th>
+              <th data-sort="annualized_volatility_pct">Ann. Volatility (5Y) (%)</th>
+              <th data-sort="sharpe_ratio">Sharpe (5Y)</th>
+              <th data-sort="max_drawdown_pct">Max Drawdown (5Y) (%)</th>
+              <th data-sort="var_95_pct">VaR 95% (5Y) (%)</th>
+              <th data-sort="beta_nifty">Beta vs NIFTY (5Y)</th>
+              <th data-sort="52w_high">52W Range</th>
+            </tr>
+          </thead>
+          <tbody id="summary-table-body">
+            <!-- Populated by app.js -->
+          </tbody>
+        </table>
+      </div>
+    </div><!-- /#tab-overview -->
+
+    <!-- TAB 2: TECHNICAL & PRICE ACTION (DEEP DIVE) -->
+    <div id="tab-technical" class="tab-pane tab-pane--hidden" role="tabpanel" aria-labelledby="tab-btn-technical">
+      <!-- Local Inline Overlays Controls Bar -->
+      <div class="controls-bar controls-bar--inline" aria-label="Technical Overlays">
+        <span class="controls-bar__label">Technical Overlays:</span>
+        <div class="slicer-buttons" id="overlay-toggles">
+          <button class="toggle-pill toggle-pill--active" data-overlay="sma_20" aria-pressed="true">SMA-20</button>
+          <button class="toggle-pill toggle-pill--active" data-overlay="sma_50" aria-pressed="true">SMA-50</button>
+          <button class="toggle-pill" data-overlay="sma_200" aria-pressed="false">SMA-200</button>
+          <button class="toggle-pill" data-overlay="ema_20" aria-pressed="false">EMA-20</button>
+          <button class="toggle-pill" data-overlay="bb" aria-pressed="false">Bollinger</button>
+        </div>
+      </div>
+
+      <!-- Tab 2 Visuals -->
+      <div class="chart-grid">
+        <!-- Chart 4: Primary Price Action & Trend Channel (Full Width) -->
+        <div class="chart-container chart-container--full">
+          <div class="chart-container__header">
+            <div>
+              <h3 class="chart-container__title">Price Action &amp; Trend Channel — <span id="price-chart-ticker">RELIANCE.NS</span></h3>
+              <p class="chart-container__caption">Proportionally adjusted OHLC price action with moving average trend ribbons and crossover signals.</p>
+            </div>
+            <span id="regime-badge" class="badge badge--neutral"></span>
+          </div>
+          <div class="chart-container__plot" id="chart-price"></div>
+        </div>
+
+        <!-- Chart 5: Wilder's RSI-14 Momentum Oscillator -->
+        <div class="chart-container">
+          <div class="chart-container__header">
+            <div>
+              <h3 class="chart-container__title">Momentum: RSI-14 Oscillator</h3>
+              <p class="chart-container__caption">14-day Wilder's Relative Strength Index with standard 70/30 momentum thresholds.</p>
+            </div>
+          </div>
+          <div class="chart-container__plot" id="chart-rsi"></div>
+        </div>
+
+        <!-- Chart 6: Trading Volume & Liquidity Monitor -->
+        <div class="chart-container">
+          <div class="chart-container__header">
+            <div>
+              <h3 class="chart-container__title">Trading Volume &amp; Liquidity Monitor</h3>
+              <p class="chart-container__caption">Daily traded volume relative to the 20-day volume moving average (highlighting sessions &gt; 2.0x SMA).</p>
+            </div>
+          </div>
+          <div class="chart-container__plot" id="chart-volume"></div>
+        </div>
+      </div><!-- /.chart-grid -->
+    </div><!-- /#tab-technical -->
+
+    <!-- TAB 3: RISK & PORTFOLIO DIVERSIFICATION -->
+    <div id="tab-risk" class="tab-pane tab-pane--hidden" role="tabpanel" aria-labelledby="tab-btn-risk">
+      <!-- Tab 3 Visuals -->
+      <div class="chart-grid">
+        <!-- Chart 7: Underwater Drawdown Profile (Full Width) -->
+        <div class="chart-container chart-container--full">
+          <div class="chart-container__header">
+            <div>
+              <h3 class="chart-container__title">Underwater Drawdown Profile</h3>
+              <p class="chart-container__caption">Peak-to-trough historical capital drawdown profile and subsequent recovery paths.</p>
+            </div>
+          </div>
+          <div class="chart-container__plot" id="chart-drawdown"></div>
+        </div>
+
+        <!-- Chart 8: Rolling 30-Day Volatility Regime -->
+        <div class="chart-container">
+          <div class="chart-container__header">
+            <div>
+              <h3 class="chart-container__title">Rolling 30-Day Volatility</h3>
+              <p class="chart-container__caption">Rolling 30-day annualized historical return volatility over time.</p>
+            </div>
+          </div>
+          <div class="chart-container__plot" id="chart-volatility"></div>
+        </div>
+
+        <!-- Chart 9: Cross-Asset Pearson Correlation Heatmap -->
+        <div class="chart-container">
+          <div class="chart-container__header">
+            <div>
+              <h3 class="chart-container__title">Cross-Asset Correlation Heatmap</h3>
+              <p class="chart-container__caption">Pairwise Pearson correlation matrix derived from complete-case daily return alignment.</p>
+            </div>
+          </div>
+          <div class="chart-container__plot" id="chart-correlation"></div>
+        </div>
+      </div><!-- /.chart-grid -->
+    </div><!-- /#tab-risk -->
+
+  </main>
+
+  <!-- 6. Footer -->
+  <footer class="dashboard-footer">
+    <p>Data sourced from Yahoo Finance via yfinance. All financial metrics precomputed by the Python analytics pipeline. Dashboard renders precomputed data only — zero client-side recalculation.</p>
+    <p class="dashboard-footer__disclaimer">Illustrative proxy assumption: 10-Yr Indian G-Sec yield at 6.50% p.a. This dashboard is for educational and analytical purposes only. Not Financial Advice.</p>
+    <p class="dashboard-footer__disclaimer">Built By Girish Shenoy</p>
+  </footer>
+
+  <!-- Scripts (order matters) -->
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <script src="dashboard_data.js"></script>
+  <script src="app.js"></script>
+
+</body>
+</html>

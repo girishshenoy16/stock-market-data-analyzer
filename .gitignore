@@ -1,0 +1,37 @@
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDE and Editor artifacts
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Operating System artifacts
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Temporary cache files
+.pytest_cache/
+*.tmp
+
+# Generated runtime logs
+logs/
+*.log
+
+# Project Task Tracking
+task.md
+docs/INTERVIEW_GUIDE.md
+
+# Market Data & Generated Outputs
+data/
+outputs/
